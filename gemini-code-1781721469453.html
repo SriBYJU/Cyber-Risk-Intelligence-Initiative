@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shriyan Avadhanula | Cyber Risk Intelligence Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Georgia:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset & Core Variables */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --navy-dark: #0A1128;
+            --navy-main: #14213D;
+            --burgundy: #800020;
+            --burgundy-light: #A52A42;
+            --off-white: #F4F5F6;
+            --white: #FFFFFF;
+            --text-main: #2D3748;
+            --text-muted: #718096;
+            --border-color: #E2E8F0;
+            --font-serif: 'Georgia', serif;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--off-white);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background-color: var(--navy-dark);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            border-right: 4px solid var(--burgundy);
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 30px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h1 {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+
+        .sidebar-header p {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #A0AEC0;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-section {
+            padding: 20px 0 10px;
+        }
+
+        .sidebar-label {
+            padding: 0 24px 10px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Year Tabs */
+        .year-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 0 24px 15px;
+        }
+
+        .year-tab {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #A0AEC0;
+            padding: 6px 12px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .year-tab.active, .year-tab:hover {
+            background: var(--burgundy);
+            border-color: var(--burgundy);
+            color: var(--white);
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            display: block;
+            color: #E2E8F0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item.sub-item {
+            padding-left: 40px;
+            font-size: 13px;
+            color: #A0AEC0;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--navy-main);
+            color: var(--white);
+            border-left-color: var(--burgundy);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 280px;
+            padding: 0;
+            position: relative;
+        }
+
+        /* Topbar */
+        .topbar {
+            background-color: var(--white);
+            padding: 16px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-left {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background-color: var(--burgundy);
+        }
+
+        .content-container {
+            padding: 48px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Headers */
+        .section-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--navy-dark);
+        }
+
+        .section-header h2 {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            color: var(--navy-dark);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .section-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--burgundy);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* Home Section */
+        .home-hero {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--navy-dark);
+            padding: 40px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .home-hero h2 {
+            font-family: var(--font-serif);
+            font-size: 28px;
+            color: var(--navy-dark);
+            margin-bottom: 15px;
+        }
+
+        .home-hero p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .about-text p {
+            font-size: 15px;
+            margin-bottom: 16px;
+            color: var(--text-main);
+        }
+
+        .profile-img-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--white);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .cert-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--burgundy);
+            padding: 24px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .cert-card h3 {
+            font-family: var(--font-serif);
+            color: var(--navy-dark);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .cert-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--burgundy);
+            font-family: var(--font-serif);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .cert-list {
+            list-style: none;
+        }
+
+        .cert-list li {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .cert-list li:last-child { border-bottom: none; }
+
+        /* Document Center */
+        .doc-center {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 30px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .doc-item {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px;
+            background: var(--off-white);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .doc-item-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--navy-dark);
+            margin-bottom: 5px;
+        }
+
+        .doc-item-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 3px;
+            font-family: var(--font-sans);
+            transition: all 0.2s;
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: var(--burgundy);
+            color: var(--white);
+            border: 1px solid var(--burgundy);
+        }
+
+        .btn-primary:hover { background-color: var(--burgundy-light); }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--navy-main);
+            border: 1px solid var(--navy-main);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--navy-main);
+            color: var(--white);
+        }
+
+        /* Stat Grids */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-left: 4px solid var(--navy-main);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .stat-val {
+            font-family: var(--font-serif);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--burgundy);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy-dark);
+        }
+
+        .stat-src {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Data Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            margin: 30px 0;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--navy-dark);
+            color: var(--white);
+            font-weight: 500;
+            text-align: left;
+            padding: 12px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        tr:nth-child(even) td { background-color: #FAFAFA; }
+
+        .risk-badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+        }
+        .bg-critical { background: rgba(128,0,32,0.1); color: var(--burgundy); }
+        .bg-high { background: rgba(20,33,61,0.1); color: var(--navy-main); }
+        .bg-mod { background: #EDF2F7; color: #4A5568; }
+
+        /* Timelines & Findings */
+        .timeline {
+            border-left: 2px solid var(--border-color);
+            padding-left: 24px;
+            margin: 30px 0;
+        }
+
+        .tl-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--burgundy);
+            border: 2px solid var(--white);
+        }
+
+        .tl-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--navy-main);
+            margin-bottom: 4px;
+        }
+
+        .tl-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .tl-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .callout {
+            background: rgba(20,33,61,0.03);
+            border-left: 4px solid var(--navy-main);
+            padding: 20px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .callout-red {
+            background: rgba(128,0,32,0.03);
+            border-left-color: var(--burgundy);
+        }
+
+        .report-section { display: none; }
+        .report-section.active { display: block; }
+
+        .content-panel { display: none; }
+        .content-panel.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Shriyan Avadhanula</h1>
+            <p>Cyber Risk Intelligence</p>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-label">Global Views</div>
+            <a href="#" class="nav-item active" onclick="switchMainTab('home', this)">Home</a>
+            <a href="#" class="nav-item" onclick="switchMainTab('about', this)">About Me</a>
+            <a href="#" class="nav-item" onclick="switchMainTab('report', this)">The Report</a>
+        </div>
+
+        <div class="sidebar-section" id="edition-nav" style="display: none;">
+            <div class="sidebar-label">Select Edition</div>
+            <div class="year-tabs">
+                <button class="year-tab active" onclick="switchYear('2026', this)">2026</button>
+                <button class="year-tab" onclick="switchYear('2027', this)">2027</button>
+            </div>
+            
+            <div id="nav-2026">
+                <a href="#" class="nav-item sub-item active" onclick="switchReportTab('part1', this)">Part 1: Risk Index</a>
+                <a href="#" class="nav-item sub-item" onclick="switchReportTab('part2', this)">Part 2: Case Studies</a>
+                <a href="#" class="nav-item sub-item" onclick="switchReportTab('part3', this)">Part 3: Emerging Threats</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">Executive Summary / 2025 Data Edition</div>
+            <div class="topbar-right">
+                <div class="status-dot"></div>
+                Live Database
+            </div>
+        </div>
+
+        <div class="content-container">
+
+            <div id="home-section" class="content-panel active">
+                <div class="section-header">
+                    <span class="section-badge">Welcome</span>
+                    <h2>Cyber Risk Intelligence Initiative</h2>
+                </div>
+                
+                <div class="home-hero">
+                    <h2>Prepared for Executive Review</h2>
+                    <p style="margin-bottom: 24px;">The <em>Cyber Risk Intelligence Report</em> is an independent research publication authored by Shriyan Avadhanula. It synthesizes complex threat data from authoritative sources—including IBM, Verizon, and the U.S. Government—into actionable, quantified insights for corporate boards and executive leadership.</p>
+                    
+                    <h3 style="font-family: var(--font-serif); color: var(--navy-dark); font-size: 20px; margin-bottom: 8px;">Annual Publication Cycle</h3>
+                    <p style="margin-bottom: 24px;">Published once a year, each edition is rigorously updated to reflect the latest threat landscape. It features a proprietary Industry Risk Index, deep-dive case studies on historical governance failures, and strategic forecasts of emerging vulnerabilities like AI-weaponization and supply chain compromise.</p>
+                    
+                    <h3 style="font-family: var(--font-serif); color: var(--navy-dark); font-size: 20px; margin-bottom: 8px;">Navigating the Platform</h3>
+                    <p style="margin-bottom: 12px;">Use the global sidebar to explore the platform:</p>
+                    <ul style="list-style-position: inside; margin-bottom: 24px; color: var(--text-muted); font-size: 15px;">
+                        <li style="margin-bottom: 6px;"><strong>About Me:</strong> Analyst background, technical projects, and industrial certifications.</li>
+                        <li style="margin-bottom: 6px;"><strong>The Report:</strong> Access the live interactive dashboard, segmented into the Risk Index, Case Studies, and Emerging Threats.</li>
+                        <li><strong>Document Center:</strong> Directly view or open full PDF reports, raw Excel scoring models, and Word document briefs.</li>
+                    </ul>
+                    
+                    <div class="callout" style="margin: 0;">
+                        <strong>Let's Connect:</strong> For inquiries, research collaborations, or to discuss the findings in this report, please reach out directly at <a href="mailto:avadhanula.shriyan@gmail.com" style="color: var(--burgundy); font-weight: 600; text-decoration: none;">avadhanula.shriyan@gmail.com</a>.
+                    </div>
+                </div>
+            </div>
+
+            <div id="about-section" class="content-panel">
+                <div class="section-header">
+                    <span class="section-badge">Analyst Profile</span>
+                    <h2>About Me</h2>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>I am a high school student and rising junior based in Virginia, with a primary focus on the intersection of cybersecurity, finance, and technical development. My work is driven by a strong interest in understanding how complex technological infrastructures interact with strategic business risk and governance.</p>
+                        
+                        <p>My background includes extensive technical project development. At age 16, I designed and filed a patent for <em>DataShadow</em>, an architecture built around the concept of "data as a financial portfolio." I am actively involved in software development, utilizing JavaScript and Python-based models to build robust digital solutions.</p>
+                        
+                        <p>In addition to technical development, I have a deep interest in corporate finance, risk operations, and the structural integrity of digital systems. As of June 2026, I have completed 12 industrial certifications and virtual internships across top-tier financial and technology institutions, bridging the gap between technical capability and business strategy.</p>
+                        
+                        <p>The <em>Cyber Risk Intelligence Report</em> is an annual, independent research publication I author to quantify and analyze industry-wide cybersecurity risks using authoritative datasets.</p>
+                    </div>
+
+                    <div class="about-sidebar">
+                        <div class="profile-img-container">
+                            <img src="90C826CB-ED77-4561-AFCD-F08A40CA4E6D.png" alt="Shriyan Avadhanula" class="profile-img">
+                        </div>
+                        <div class="cert-card">
+                            <h3>Industrial Certifications</h3>
+                            <div class="cert-number">12</div>
+                            <ul class="cert-list">
+                                <li>Goldman Sachs (Risk & Ops)</li>
+                                <li>Citi (Investment Banking)</li>
+                                <li>JPMorgan (Investment Banking)</li>
+                                <li>Bank of America (Private Bank)</li>
+                                <li>PNC (Financial Services)</li>
+                                <li>Mastercard (Cybersecurity)</li>
+                                <li>IBM (AI Literacy)</li>
+                                <li>IBM (Cybersecurity Fundamentals)</li>
+                                <li>IBM (Data Fundamentals)</li>
+                                <li>Microsoft (Power Automate)</li>
+                                <li>HubSpot (Digital Marketing)</li>
+                                <li>+ Additional virtual programs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="report-section" class="content-panel">
+                
+                <div class="doc-center">
+                    <div class="section-header" style="margin-bottom: 10px; border-bottom:none;">
+                        <span class="section-badge">Downloads</span>
+                        <h2 style="font-size: 24px;">Document Center</h2>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-muted);">Access the official publications, raw datasets, and case study documents.</p>
+                    
+                    <div class="doc-grid">
+                        <div class="doc-item">
+                            <div>
+                                <div class="doc-item-title">Full Master Report (PDF)</div>
+                                <div class="doc-item-desc">Cyber_Risk_Intelligence_Report_2026.pdf</div>
+                            </div>
+                            <div class="doc-actions">
+                                <a href="Cyber_Risk_Intelligence_Report_2026.pdf" target="_blank" class="btn btn-outline">View</a>
+                                <a href="Cyber_Risk_Intelligence_Report_2026.pdf" target="_blank" download class="btn btn-primary">Download</a>
+                            </div>
+                        </div>
+
+                        <div class="doc-item">
+                            <div>
+                                <div class="doc-item-title">Raw Data & Scoring Model</div>
+                                <div class="doc-item-desc">Cyber_Risk_Index_2025_v3 (1).xlsx</div>
+                            </div>
+                            <div class="doc-actions">
+                                <a href="https://docs.google.com/spreadsheets/d/1pIq1QmLDg9h9HNXFQINKA9p5FDm2xcj-/edit?usp=sharing" target="_blank" class="btn btn-outline">View</a>
+                                <a href="https://drive.google.com/uc?export=download&id=1pIq1QmLDg9h9HNXFQINKA9p5FDm2xcj-" class="btn btn-primary">Download Excel</a>
+                            </div>
+                        </div>
+
+                        <div class="doc-item">
+                            <div>
+                                <div class="doc-item-title">Part 2: Case Study Deep Dive</div>
+                                <div class="doc-item-desc">equifax_case_study (1).docx</div>
+                            </div>
+                            <div class="doc-actions">
+                                <a href="https://docs.google.com/document/d/19GsI5v7gimE80kFmWXw4b9JCEGqeSedN/edit?rtpof=true" target="_blank" class="btn btn-outline">View</a>
+                                <a href="https://drive.google.com/uc?export=download&id=19GsI5v7gimE80kFmWXw4b9JCEGqeSedN" class="btn btn-primary">Download Word</a>
+                            </div>
+                        </div>
+
+                        <div class="doc-item">
+                            <div>
+                                <div class="doc-item-title">Part 3: Emerging Threats</div>
+                                <div class="doc-item-desc">Part3_Emerging_Threats.docx</div>
+                            </div>
+                            <div class="doc-actions">
+                                <a href="https://docs.google.com/document/d/1ILzdvo2GBB4-Hu4vSAMvQ6Bu8DPw51n5/edit?usp=sharing" target="_blank" class="btn btn-outline">View</a>
+                                <a href="https://drive.google.com/uc?export=download&id=1ILzdvo2GBB4-Hu4vSAMvQ6Bu8DPw51n5" class="btn btn-primary">Download Word</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="year-2026-content" class="report-section active">
+                    
+                    <div id="part1" class="report-tab active">
+                        <div class="section-header">
+                            <span class="section-badge">Part 1 of 3</span>
+                            <h2>Industry Risk Index</h2>
+                        </div>
+                        <p>A proprietary scoring model assigning a quantitative risk score to 17 industries based on three weighted components: average breach cost (40%), attack frequency (30%), and recovery burden (30%). All inputs sourced from IBM Cost of a Data Breach Report 2025 and Verizon DBIR 2025.</p>
+
+                        <div class="callout" style="text-align: center; font-family: var(--font-mono); font-weight: bold;">
+                            Risk Score = (0.40 × Breach Cost) + (0.30 × Frequency) + (0.30 × Recovery Score)
+                        </div>
+
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <div class="stat-val">$4.44M</div>
+                                <div class="stat-label">Global Avg Breach Cost</div>
+                                <div class="stat-src">IBM 2025 — ↓9% from prior</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-val">$10.22M</div>
+                                <div class="stat-label">U.S. Avg Breach Cost</div>
+                                <div class="stat-src">IBM 2025 — all-time high</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-val">$7.42M</div>
+                                <div class="stat-label">Healthcare Breach Cost</div>
+                                <div class="stat-src">#1 for 14th consecutive year</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-val">241 Days</div>
+                                <div class="stat-label">Global Breach Lifecycle</div>
+                                <div class="stat-src">IBM 2025 — 9-year low</div>
+                            </div>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Industry</th>
+                                    <th>2025 Breach Cost</th>
+                                    <th>Risk Band</th>
+                                    <th>Est. Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Healthcare</td><td>$7.42M</td><td><span class="risk-badge bg-critical">Critical</span></td><td>90+</td></tr>
+                                <tr><td>2</td><td>Government</td><td>$2.86M</td><td><span class="risk-badge bg-critical">Critical</span></td><td>82+</td></tr>
+                                <tr><td>3</td><td>Financial</td><td>$5.56M</td><td><span class="risk-badge bg-high">High Risk</span></td><td>75+</td></tr>
+                                <tr><td>4</td><td>Industrial</td><td>$5.00M</td><td><span class="risk-badge bg-high">High Risk</span></td><td>72+</td></tr>
+                                <tr><td>5</td><td>Energy</td><td>$4.83M</td><td><span class="risk-badge bg-high">High Risk</span></td><td>70+</td></tr>
+                                <tr><td>6</td><td>Technology</td><td>$4.79M</td><td><span class="risk-badge bg-high">High Risk</span></td><td>68+</td></tr>
+                                <tr><td>7</td><td>Pharmaceuticals</td><td>$4.61M</td><td><span class="risk-badge bg-mod">Moderate</span></td><td>60+</td></tr>
+                                <tr><td>8</td><td>Education</td><td>$3.80M</td><td><span class="risk-badge bg-mod">Moderate</span></td><td>58+</td></tr>
+                                <tr><td>9</td><td>Retail</td><td>$3.54M</td><td><span class="risk-badge bg-mod">Moderate</span></td><td>55+</td></tr>
+                                <tr><td>10</td><td>Transportation</td><td>$3.98M</td><td><span class="risk-badge bg-mod">Moderate</span></td><td>50+</td></tr>
+                                <tr><td>11</td><td>Services</td><td>$4.56M</td><td><span class="risk-badge bg-mod">Moderate</span></td><td>48+</td></tr>
+                                <tr><td>12</td><td>Communications</td><td>$3.75M</td><td><span class="risk-badge bg-mod">Moderate</span></td><td>45+</td></tr>
+                                <tr><td>13</td><td>Research</td><td>$3.79M</td><td><span class="risk-badge bg-mod">Moderate</span></td><td>44+</td></tr>
+                                <tr><td>14</td><td>Consumer</td><td>$3.72M</td><td><span class="risk-badge bg-mod">Lower Risk</span></td><td>40+</td></tr>
+                                <tr><td>15</td><td>Hospitality</td><td>$4.03M</td><td><span class="risk-badge bg-mod">Lower Risk</span></td><td>35+</td></tr>
+                                <tr><td>16</td><td>Media</td><td>$4.22M</td><td><span class="risk-badge bg-mod">Lower Risk</span></td><td>30+</td></tr>
+                                <tr><td>17</td><td>Entertainment</td><td>$4.43M</td><td><span class="risk-badge bg-mod">Minimal</span></td><td>22+</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="part2" class="report-tab" style="display:none;">
+                        <div class="section-header">
+                            <span class="section-badge">Part 2 of 3</span>
+                            <h2>Breach Case Studies: Equifax (2017)</h2>
+                        </div>
+                        
+                        <div class="callout callout-red">
+                            <strong>U.S. House Oversight Committee Verdict:</strong> "The Equifax data breach was entirely preventable." Every failure documented below was avoidable with standard security practices.
+                        </div>
+
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <div class="stat-val">147.9M</div>
+                                <div class="stat-label">Americans Exposed</div>
+                                <div class="stat-src">57% of all U.S. adults</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-val">76 Days</div>
+                                <div class="stat-label">Undetected Breach</div>
+                                <div class="stat-src">May 13 - July 29, 2017</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-val">$1.38B</div>
+                                <div class="stat-label">Total Estimated Cost</div>
+                                <div class="stat-src">Settlements & Upgrades</div>
+                            </div>
+                        </div>
+
+                        <h3 style="font-family: var(--font-serif); color: var(--navy-dark); margin: 30px 0 15px;">Breach Timeline</h3>
+                        <div class="timeline">
+                            <div class="tl-item">
+                                <div class="tl-date">March 7, 2017</div>
+                                <div class="tl-title">Apache Struts Vulnerability Disclosed</div>
+                                <div class="tl-desc">Patch released the same day for a critical vulnerability (CVSS 10.0). DHS alerts Equifax directly.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-date">March 9-15, 2017</div>
+                                <div class="tl-title">Internal Failure to Patch</div>
+                                <div class="tl-desc">Internal mandate to patch within 48 hours is ignored. Scans fail to detect the vulnerability due to an expired SSL certificate on network monitors.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-date">May 13 - July 29, 2017</div>
+                                <div class="tl-title">Systematic Exfiltration</div>
+                                <div class="tl-desc">Attackers enter and operate undetected for 76 days, pulling records from 51 separate databases using encrypted traffic.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-date">July 29 - Sept 7, 2017</div>
+                                <div class="tl-title">Discovery, Insider Sales & Disclosure</div>
+                                <div class="tl-desc">Breach found accidentally via routine cert renewal. Executives sell $1.8M in stock before public notification 40 days later.</div>
+                            </div>
+                        </div>
+
+                        <h3 style="font-family: var(--font-serif); color: var(--navy-dark); margin: 30px 0 15px;">Business Decision Failures</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Severity</th>
+                                    <th>What Went Wrong</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Patch Management</strong></td>
+                                    <td><span class="risk-badge bg-critical">Critical</span></td>
+                                    <td>Critical patch ignored for 66+ days. No verification system existed to confirm internal mandates were executed.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Org Structure</strong></td>
+                                    <td><span class="risk-badge bg-critical">Critical</span></td>
+                                    <td>CSO reported to Chief Legal Officer, not CIO. Security and IT were siloed, creating an "accountability gap."</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Certificate Mgmt</strong></td>
+                                    <td><span class="risk-badge bg-high">High</span></td>
+                                    <td>SSL certificate for monitoring tools expired and lapsed for 19 months, completely blinding internal defenses.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Growth Strategy</strong></td>
+                                    <td><span class="risk-badge bg-high">High</span></td>
+                                    <td>Aggressive M&A added immense IT complexity. Company could not even inventory its own software assets.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Disclosure Gov</strong></td>
+                                    <td><span class="risk-badge bg-high">High</span></td>
+                                    <td>40-day gap before public disclosure. CEO waited 22 days to notify the board. No trading blackout imposed on executives.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="part3" class="report-tab" style="display:none;">
+                        <div class="section-header">
+                            <span class="section-badge">Part 3 of 3</span>
+                            <h2>Emerging Threats (2026)</h2>
+                        </div>
+                        <p>Analysis of threats accelerating rapidly and reshaping cyber incidents, sourced from IBM X-Force 2026, Verizon DBIR 2025, and Black Kite 2026.</p>
+
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <div class="stat-val">40%</div>
+                                <div class="stat-label">Vuln Exploitation</div>
+                                <div class="stat-src">#1 Attack Vector (IBM 2026)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-val">1 in 6</div>
+                                <div class="stat-label">AI-Driven Breaches</div>
+                                <div class="stat-src">First year tracked (IBM 2025)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-val">30%</div>
+                                <div class="stat-label">3rd-Party Breaches</div>
+                                <div class="stat-src">Doubled YoY (Verizon 2025)</div>
+                            </div>
+                        </div>
+
+                        <h3 style="font-family: var(--font-serif); color: var(--navy-dark); margin: 40px 0 15px;">Threat 1: AI-Weaponized Attacks (Speed Kills)</h3>
+                        <div class="callout">
+                            <strong>1. AI-Accelerated Vulnerability Discovery:</strong> Vulnerability exploitation overtook phishing as the #1 initial access vector in 2025. AI tools compress the patch window from weeks to hours by scanning millions of applications autonomously.<br><br>
+                            <strong>2. AI-Enhanced Social Engineering:</strong> AI-generated phishing content rose 46%. Deepfake techniques were involved in 35% of AI-driven breaches.<br><br>
+                            <strong>3. Shadow AI Governance:</strong> 63% of organizations lack AI governance policies. Over 300,000 ChatGPT credentials were found on the dark web, resulting in a $670,000 "shadow AI" breach premium.
+                        </div>
+
+                        <h3 style="font-family: var(--font-serif); color: var(--navy-dark); margin: 40px 0 15px;">Threat 2: Supply Chain & Third-Party Compromise</h3>
+                        <div class="callout callout-red">
+                            <strong>Cascading Impact:</strong> Black Kite documented 136 major third-party breach events affecting 719 named victims and an estimated 26,000 unnamed downstream organizations. Attackers bypass hardened targets by compromising trusted vendors, software pipelines, and SaaS integrations (e.g., OAuth token theft).
+                        </div>
+
+                        <h3 style="font-family: var(--font-serif); color: var(--navy-dark); margin: 40px 0 15px;">Strategic Recommendations</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Recommendation</th>
+                                    <th>Threat</th>
+                                    <th>Business Implementation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Shorten Patch Windows</strong></td>
+                                    <td>AI</td>
+                                    <td>Compress to 24-72 hours. Automate deployment for critical CVEs.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Build AI Governance</strong></td>
+                                    <td>AI</td>
+                                    <td>Define acceptable data for commercial AI tools to avoid shadow AI exposure.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Continuous Vendor Monitoring</strong></td>
+                                    <td>Supply Chain</td>
+                                    <td>Abandon static annual questionnaires for automated attack surface tracking.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Inventory API Access</strong></td>
+                                    <td>Supply Chain</td>
+                                    <td>Track and prune all OAuth tokens and SaaS API keys actively.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="year-2027-content" class="report-section" style="display:none;">
+                    <div class="section-header">
+                        <span class="section-badge">Upcoming</span>
+                        <h2>2027 Edition Status</h2>
+                    </div>
+                    <div class="callout">
+                        <strong>Status: Data Collection Phase</strong><br>
+                        The 2027 edition will incorporate IBM Cost of a Data Breach Report 2026 (publishing July 2026) and Verizon DBIR 2026 (published April 2026). Additional case studies and updated industry scores will be added. Expected publication: August 2027.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Switch between Global Views (Home, About vs Report)
+        function switchMainTab(tabName, element) {
+            document.querySelectorAll('.sidebar-section .nav-item:not(.sub-item)').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById(tabName + '-section').classList.add('active');
+
+            if(tabName === 'report') {
+                document.getElementById('edition-nav').style.display = 'block';
+            } else {
+                document.getElementById('edition-nav').style.display = 'none';
+            }
+        }
+
+        // Switch between Years
+        function switchYear(year, element) {
+            document.querySelectorAll('.year-tab').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.querySelectorAll('.report-section').forEach(el => el.style.display = 'none');
+            document.getElementById('year-' + year + '-content').style.display = 'block';
+
+            if(year === '2026') {
+                document.getElementById('nav-2026').style.display = 'block';
+            } else {
+                document.getElementById('nav-2026').style.display = 'none';
+            }
+        }
+
+        // Switch between Report Parts
+        function switchReportTab(partId, element) {
+            document.querySelectorAll('.sub-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            document.querySelectorAll('.report-tab').forEach(el => el.style.display = 'none');
+            document.getElementById(partId).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
